@@ -240,10 +240,10 @@ class SublimeMergeExplorerIntegrationInstallCommand(sublime_plugin.ApplicationCo
 				self.i.load_release_info()
 				window = sublime.active_window()
 				items = ["Install", "Cancel"]
-				placeholder = "Continue with installation? This will restart Sublime Merge."
+				placeholder = "Continue with installation?"
 				if self.i.is_installed():
 					items[0] = "Reinstall"
-					placeholder = "Already installed. Continue with reinstallation? This will restart Sublime Merge."
+					placeholder = "Already installed. Continue with reinstallation?"
 				window.show_quick_panel(items, self.on_select, placeholder=placeholder)
 
 			get_sublime_merge_path(on_path_select)
@@ -277,7 +277,7 @@ class SublimeMergeExplorerIntegrationUninstallCommand(sublime_plugin.Application
 			window = sublime.active_window()
 			cb = self.on_select
 			items = ["Uninstall", "Cancel"]
-			placeholder = "Continue with deinstallation? This will Restart Sublime Merge."
+			placeholder = "Continue with deinstallation?"
 			if not self.i.is_installed():
 				items = ["Ok"]
 				placeholder = "Not installed."
@@ -318,7 +318,7 @@ class SublimeMergeExplorerIntegrationUpdateCommand(sublime_plugin.ApplicationCom
 
 			items = ["Update", "Cancel"]
 			cb = self.on_select
-			placeholder = "Update available. Update now? This will restart Sublime Merge."
+			placeholder = "Update available. Update now?"
 			update_available = self.i.update_available()
 
 			if not update_available:
