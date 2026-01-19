@@ -1,0 +1,12 @@
+{
+	// If enabled, checks for updates on startup
+	"auto_updates": true,
+	// Identifier of installed version. *DO NOT CHANGE MANUALLY*
+	"installed_release_ts": 0,
+	// Timestamp of most recent update check. *DO NOT CHANGE MANUALLY*
+	"last_update_check_ts": 0,
+	// Interval for update checks in seconds. Two weeks by default.
+	"update_check_interval": 1209600,
+	// Path to sublime merge
+	"sublime_merge_path": ""
+}

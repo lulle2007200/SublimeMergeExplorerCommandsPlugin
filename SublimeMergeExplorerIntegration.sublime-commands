@@ -1,0 +1,27 @@
+[
+	{
+		"command": "sublime_merge_explorer_integration_update",
+		"caption": "SublimeMergeExplorerIntegration: Check for Updates"
+	},
+	{
+		"command": "sublime_merge_explorer_integration_install",
+		"caption": "SublimeMergeExplorerIntegration: Install"
+	},
+	{
+		"command": "sublime_merge_explorer_integration_uninstall",
+		"caption": "SublimeMergeExplorerIntegration: Uninstall"
+	},
+	{
+		"command": "edit_settings",
+		"caption": "Preferences: SublimeMergeExplorerIntegration",
+		"args": {
+			"base_file": "${packages}/SublimeMergeExplorerIntegration/SublimeMergeExplorerIntegration.sublime-settings"
+		}
+	},
+	{
+		"command": "sublime_merge_explorer_integration_install_done"
+	},
+	{
+		"command": "sublime_merge_explorer_integration_uninstall_done"
+	}
+]
