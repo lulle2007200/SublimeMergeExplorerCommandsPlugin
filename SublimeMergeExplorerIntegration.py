@@ -1,6 +1,7 @@
 import sublime
 import sublime_plugin
 
+from typing import Optional
 import tempfile
 import requests
 import pathlib
@@ -40,7 +41,7 @@ def get_sublime_merge_path(callback):
 	placeholder = ""
 	default_path = pathlib.Path("C:\\Program Files\\Sublime Merge\\sublime_merge.exe")
 	if default_path.is_file():
-		placeholder = default_path
+		placeholder = str(default_path)
 
 	def on_done(input: str):
 		path = pathlib.Path(input).absolute()
@@ -62,16 +63,17 @@ class Installer:
 	owner        = "lulle2007200"
 	package_name = "SublimeMerge-6a1f6b13-3b82-48a1-9e06-7bb0a6d0bffd"
 	
-	def __init__(self, sublime_merge_path: pathlib.Path | None):
-		self.sublime_merge_path = sublime_merge_path
-		self.tmp_dir            = pathlib.Path(tempfile.mkdtemp())
-		self.extract_dir        = self.tmp_dir / "extract"
-		self.archive            = self.tmp_dir / "package.zip"
-		self.install_dir        = self.get_sublime_install_dir()
-		self.root_cert          = self.extract_dir / "root_ca.cer"
-		self.package            = self.extract_dir / "package.msix"
-		self.external           = self.extract_dir / "external"
-		self.release_info       = None #type: Optional[dict]
+	def __init__(self, sublime_merge_path: Optional[pathlib.Path]):
+		self.sublime_merge_path           = sublime_merge_path
+		self.tmp_dir                      = pathlib.Path(tempfile.mkdtemp())
+		self.extract_dir                  = self.tmp_dir / "extract"
+		self.archive                      = self.tmp_dir / "package.zip"
+		self.install_dir                  = self.get_sublime_install_dir()
+		self.root_cert                    = self.extract_dir / "root_ca.cer"
+		self.package                      = self.extract_dir / "package.msix"
+		self.external                     = self.extract_dir / "external"
+		self.release_info                 = None #type: Optional[dict]
+		self.sublime_text_install_dir     = self.get_sublime_text_install_dir()
 
 	# Must be called before calling any other member except 
 	def load_release_info(self):
@@ -90,10 +92,13 @@ class Installer:
 		self.load_release_info()
 		return self.release_info["assets"][0]["browser_download_url"]
 
-	def get_sublime_install_dir(self) -> pathlib.Path | None:
+	def get_sublime_install_dir(self) -> Optional[pathlib.Path]:
 		if self.sublime_merge_path:
 			return self.sublime_merge_path.parent
 		return None
+
+	def get_sublime_text_install_dir(self) -> pathlib.Path:
+		return pathlib.Path(sys.executable).parent
 
 	def download_package(self) -> None:
 		self.load_release_info()
@@ -117,6 +122,8 @@ class Installer:
 	def make_launch_subl_cmd(self, command=None, **kwargs) -> str:
 		dquote = "\\\\\"\""
 
+
+
 		args = ""
 		if command:
 			cmd_args = json.dumps(kwargs).replace("\"", dquote)
@@ -125,7 +132,7 @@ class Installer:
 		cmd = (f"$s = New-Object -ComObject Shell.Application;",
 		       f"$s.ShellExecute(''subl.exe'',",
 		       f"\"{args}\",",
-		       f"''{self.install_dir}'')")
+		       f"''{self.sublime_text_install_dir}'')")
 
 		return "".join(cmd)
 
@@ -228,7 +235,7 @@ class SublimeMergeExplorerIntegrationInstallCommand(sublime_plugin.ApplicationCo
 
 	def async_run(self):
 		try:
-			def on_path_select(path):
+			def on_path_select(path: pathlib.Path):
 				self.i = Installer(path)
 				self.i.load_release_info()
 				window = sublime.active_window()
@@ -244,6 +251,7 @@ class SublimeMergeExplorerIntegrationInstallCommand(sublime_plugin.ApplicationCo
 		except Exception:
 			sublime.run_command("sublime_merge_explorer_integration_install_done", {"result":-1})
 			raise
+
 
 	def run(self, run_async=True):
 		if run_async:
@@ -386,7 +394,6 @@ def plugin_loaded():
 		if events.install(package_name):
 			i = Installer()
 			installed = i.is_installed()
-			print(installed)
 			if not installed:
 				# NOTE: Command not available via run_command right after install
 				# sublime.run_command("sublime_explorer_integration_install")
