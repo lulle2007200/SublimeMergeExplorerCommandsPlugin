@@ -20,7 +20,7 @@
                 "mnemonic": "S",
                 "args":
                 {
-                  "base_file": "${packages}/SublimeMergeExplorerIntegration/SublimeExplorerIntegration.sublime-settings"
+                  "base_file": "${packages}/SublimeMergeExplorerIntegration/SublimeMergeExplorerIntegration.sublime-settings"
                 }
               }
             ]
