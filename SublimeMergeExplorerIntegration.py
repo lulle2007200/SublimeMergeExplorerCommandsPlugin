@@ -63,7 +63,7 @@ class Installer:
 	owner        = "lulle2007200"
 	package_name = "SublimeMerge-6a1f6b13-3b82-48a1-9e06-7bb0a6d0bffd"
 	
-	def __init__(self, sublime_merge_path: Optional[pathlib.Path]):
+	def __init__(self, sublime_merge_path: Optional[pathlib.Path] = None):
 		self.sublime_merge_path           = sublime_merge_path
 		self.tmp_dir                      = pathlib.Path(tempfile.mkdtemp())
 		self.extract_dir                  = self.tmp_dir / "extract"
