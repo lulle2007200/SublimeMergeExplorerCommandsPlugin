@@ -12,7 +12,6 @@ import sys
 import functools
 import subprocess
 import json
-import psutil
 
 from typing import Optional
 
