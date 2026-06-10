@@ -3,7 +3,9 @@
 	"*": {
 		"*": [
 			"requests",
-			"psutil"
+			"psutil",
+			"urllib3",
+			"idna"
 		]
 	}
 }
